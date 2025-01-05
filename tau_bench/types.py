@@ -1,6 +1,6 @@
 # Copyright Sierra
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from typing import List, Dict, Any, Optional, Union
 
 RESPOND_ACTION_NAME = "respond"
@@ -10,6 +10,7 @@ RESPOND_ACTION_FIELD_NAME = "content"
 class Action(BaseModel):
     name: str
     kwargs: Dict[str, Any]
+    fn_calls: Any = Field(default=None, exclude=True)
 
 
 class Task(BaseModel):
@@ -39,7 +40,12 @@ class SolveResult(BaseModel):
     reward: float
     messages: List[Dict[str, Any]]
     info: Dict[str, Any]
+    key_actions: Optional[List[Action]] = None
     total_cost: Optional[float] = None
+    raw_messages: Optional[List[Dict[str, Any]]] = None
+    node_turns: Optional[List[Dict]] = None
+    oai_messages: Optional[List[Dict[str, Any]]] = None
+    anthropic_messages: Optional[List[Dict[str, Any]]] = None
 
 
 class EnvInfo(BaseModel):
@@ -65,5 +71,10 @@ class EnvRunResult(BaseModel):
     task_id: int
     reward: float
     info: Dict[str, Any]
+    key_actions: Optional[List[Action]] = None
     traj: List[Dict[str, Any]]
     trial: int
+    raw_messages: Optional[List[Dict[str, Any]]] = None
+    node_turns: Optional[List[Dict]] = None
+    oai_messages: Optional[List[Dict[str, Any]]] = None
+    anthropic_messages: Optional[List[Dict[str, Any]]] = None
